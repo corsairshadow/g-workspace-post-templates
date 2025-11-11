@@ -109,6 +109,29 @@ pipeline {
                                 }]
                             }]
                         }';done
+
+                        for hook in "$GOOGLE_CHAT_WEBHOOK"; do
+                            curl -X POST "\$hook" \
+                            -H 'Content-Type: application/json' \
+                            -d '{
+                                "cards": [
+                                {
+                                    "header": {
+                                    "title": "🟢 Rollback Complete 🟢",
+                                    "subtitle": "🔄 The BMS Backend Rollback completed successfully  🔄 ",
+                                    "imageUrl": "https://cdn-icons-png.flaticon.com/512/93/93634.png",
+                                    "imageStyle": "IMAGE"
+                                    }
+                                }]
+                            }';done
+                        
+                        for hook in "$GOOGLE_CHAT_WEBHOOK"; do
+                            curl -X POST "\$hook" \
+                            -H 'Content-Type: application/json' \
+                            -d '{"text": "🚨Deployment ROLLBACK FAILED🚨\\nJob: $JOB_NAME \\n Build-ID : $BUILD_ID \\n $BUILD_URL "}'
+                        done
+            
+
                     """
                }//script
             }//steps
